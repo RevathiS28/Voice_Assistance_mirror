@@ -14,11 +14,11 @@ class TestVoiceAssistant(unittest.TestCase):
         self.assertEqual(result, "Hello! Need some assistance getting ready?")
 
     @patch('voice_utils.speak')
-    @patch('time.sleep', return_value=None)  # Mocking time.sleep to avoid delays
+    @patch('time.sleep', return_value=None)  # Mock time.sleep to avoid delays
     def test_respond_to_skin_tone(self, mock_sleep, mock_speak):
         # Test for Light skin tone
         respond_to_skin_tone("Light")
-        mock_speak.assert_any_call("You have a lovely light skin tone.")
+        mock_speak.assert_any_call("You have a lovely light skin tone..")
         mock_speak.assert_any_call("Soft pastels, cool blues, and pinks will look amazing on you!")
 
         # Test for Medium skin tone
@@ -40,18 +40,22 @@ class TestVoiceAssistant(unittest.TestCase):
     def test_suggest_outfits_based_on_body_type(self, mock_sleep, mock_speak):
         # Test for Mesomorph body type
         suggest_outfits_based_on_body_type("Mesomorph")
+        mock_speak.assert_any_call("I've analyzed your body type. It looks like: Mesomorph")
         mock_speak.assert_any_call("Since you have an athletic build, fitted clothing and structured jackets will enhance your silhouette.")
 
         # Test for Endomorph body type
         suggest_outfits_based_on_body_type("Endomorph")
+        mock_speak.assert_any_call("I've analyzed your body type. It looks like: Endomorph")
         mock_speak.assert_any_call("With your curvy build, high-waist pants and wrap dresses can look fabulous on you.")
 
         # Test for Ectomorph body type
         suggest_outfits_based_on_body_type("Ectomorph")
+        mock_speak.assert_any_call("I've analyzed your body type. It looks like: Ectomorph")
         mock_speak.assert_any_call("For your lean build, layered clothing and patterns can add volume and look great.")
 
         # Test for unknown body type
         suggest_outfits_based_on_body_type("Unknown")
+        mock_speak.assert_any_call("I've analyzed your body type. It looks like: Unknown")
         mock_speak.assert_any_call("Based on your structure, I suggest choosing well-fitted outfits that highlight your best features.")
 
     @patch('voice_utils.speak')
@@ -60,16 +64,19 @@ class TestVoiceAssistant(unittest.TestCase):
         # Test response for "Yes"
         mock_listen.return_value = "Yes"
         result = ask_about_body_detection()
+        mock_speak.assert_any_call("You said: 'Yes'. Let's proceed.")
         self.assertTrue(result)
 
         # Test response for "No"
         mock_listen.return_value = "No"
         result = ask_about_body_detection()
+        mock_speak.assert_any_call("Okay, skipping for now.")
         self.assertFalse(result)
 
         # Test invalid responses
-        mock_listen.return_value = "Maybe"
+        mock_listen.side_effect = ["Maybe", "Maybe", "Maybe"]
         result = ask_about_body_detection()
+        mock_speak.assert_any_call("No valid response received. Skipping body detection.")
         self.assertFalse(result)
 
     @patch('voice_utils.speak')
@@ -78,34 +85,27 @@ class TestVoiceAssistant(unittest.TestCase):
     @patch('actions.body_structure_analysis.start_body_structure_detection', return_value="Mesomorph")
     @patch('actions.outfit_suggestion.suggest_outfit_based_on_body_and_skin_tone', return_value="A lovely blue jacket")
     def test_main_flow(self, mock_outfit, mock_body_structure, mock_camera, mock_listen, mock_speak):
-        # Simulate user saying "Yes"
-        mock_listen.return_value = "Yes"
+        # Simulate user inputs
+        mock_listen.side_effect = ["Yes", "Open the camera", "Yes"]
         with patch('builtins.print') as mock_print:
-            main.main()  # Call main.main() explicitly
+            main.main()
             mock_speak.assert_any_call("Great! Let's get started.")
             mock_speak.assert_any_call("Opening camera for real-time analysis...")
-
-        # Simulate user asking for camera analysis and body detection
-        mock_listen.return_value = "Open the camera"
-        mock_speak.assert_any_call("Opening camera for real-time analysis...")
-        mock_speak.assert_any_call("Analyzing body structure...")
-
-        # Simulate user selecting "Yes" for outfit selection
-        mock_listen.return_value = "Yes"
-        mock_outfit.assert_called_with("Mesomorph", "Light")
-        mock_speak.assert_any_call("A lovely blue jacket")
+            mock_speak.assert_any_call("Analyzing body structure...")
+            mock_outfit.assert_called_with("Mesomorph", "Light")
+            mock_speak.assert_any_call("A lovely blue jacket")
 
     @patch('voice_utils.speak')
     @patch('voice_utils.listen_for_command')
     def test_invalid_user_responses_in_main(self, mock_listen, mock_speak):
-        # Test for invalid "Yes"/"No" responses from the user
-        mock_listen.return_value = "Maybe"
+        # Test for invalid "Yes"/"No" responses
+        mock_listen.side_effect = ["Maybe", "Maybe", "Maybe"]
         with patch('builtins.print') as mock_print:
             main.main()
             mock_speak.assert_any_call("Please say 'Yes' or 'No'.")
 
-        # Test for repeated invalid responses
-        mock_listen.return_value = ""
+        # Test for empty responses
+        mock_listen.side_effect = ["", "", ""]
         with patch('builtins.print') as mock_print:
             main.main()
             mock_speak.assert_any_call("Didn't catch that. Please speak clearly.")
