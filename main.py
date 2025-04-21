@@ -14,7 +14,7 @@ def get_greeting():
 
 def respond_to_skin_tone(skin_tone):
     if "Light" in skin_tone:
-        speak("You have a lovely light skin tone.")
+        speak("You have a lovely light skin tone..")
         time.sleep(1)
         speak("Soft pastels, cool blues, and pinks will look amazing on you!")
     elif "Medium" in skin_tone:
@@ -27,6 +27,7 @@ def respond_to_skin_tone(skin_tone):
         speak("Bright colors like royal blue, yellow, and white will really stand out on you!")
     else:
         speak("Couldn't determine your exact skin tone, but you're always glowing!")
+
 
 def suggest_outfits_based_on_body_type(body_type):
     speak(f"I've analyzed your body type. It looks like: {body_type}")
