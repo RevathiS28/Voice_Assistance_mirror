@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, MagicMock
 import time
 import main
-import voice_utils 
+from voice_utils import respond_to_skin_tone, suggest_outfits_based_on_body_type, ask_about_body_detection
 
 class TestVoiceAssistant(unittest.TestCase):
 
