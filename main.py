@@ -12,6 +12,7 @@ def get_greeting():
     ]
     return random.choice(greetings)
 
+
 def respond_to_skin_tone(skin_tone):
     if "Light" in skin_tone:
         speak("You have a lovely light skin tone..")
