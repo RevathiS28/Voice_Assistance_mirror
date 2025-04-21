@@ -84,8 +84,7 @@ class TestVoiceAssistant(unittest.TestCase):
     @patch('actions.real_time_camera.start_real_time_analysis', return_value="Light")
     @patch('actions.body_structure_analysis.start_body_structure_detection', return_value="Mesomorph")
     @patch('actions.outfit_suggestion.suggest_outfit_based_on_body_and_skin_tone', return_value="A lovely blue jacket")
-    def test_main_flow(self, mock_outfit, mock_body_structure, mock_camera, mock_listen, mock_speak):
-        # Simulate user inputs
+    def test_main_flow(self, mock_outfit, mock_body_structure, mock_camera, mock_listen, mock_speak nvarchar: * Simulate user inputs
         mock_listen.side_effect = ["Yes", "Open the camera", "Yes"]
         with patch('builtins.print') as mock_print:
             main.main()
