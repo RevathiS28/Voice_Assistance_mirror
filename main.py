@@ -121,7 +121,7 @@ def main():
                                                 if suggestion:
                                                     speak(suggestion)
                                                 else:
-                                                    speak("I couldn't suggest an outfit right now.")
+                                                    speak("I couldn't suggest an outfit right now..")
                                             else:
                                                 speak("No problem. You can try later.")
                                         else:
