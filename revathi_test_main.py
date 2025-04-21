@@ -1,7 +1,8 @@
-import main
 import unittest
 from unittest.mock import patch, MagicMock
 import time
+import main
+from voice_utils import get_greeting, respond_to_skin_tone, suggest_outfits_based_on_body_type, ask_about_body_detection  # Correct imports
 
 class TestVoiceAssistant(unittest.TestCase):
 
@@ -79,7 +80,7 @@ class TestVoiceAssistant(unittest.TestCase):
         # Simulate user saying "Yes"
         mock_listen.return_value = "Yes"
         with patch('builtins.print') as mock_print:
-            main()
+            main()  # Ensure 'main' function is correctly defined and imported
             mock_speak.assert_called_with("Great! Let's get started.")
             mock_speak.assert_called_with("Opening camera for real-time analysis...")
 
