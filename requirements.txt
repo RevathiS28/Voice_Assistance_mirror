@@ -1,5 +1,4 @@
 annotated-types
-audioop-lts
 cachetools
 certifi
 cffi
