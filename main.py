@@ -3,7 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
-# Paths_
+# Paths
 video_path = r"C:\Users\Admin\PycharmProjects\ShirtTryOns\Resources\Videos\ANKUR_1.mp4"
 shirtFolderPath = r"C:\Users\Admin\PycharmProjects\ShirtTryOns\Resources\Shirts"
 
@@ -141,3 +141,6 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 pose.close()
+
+
+# Triggering CI pipeline
