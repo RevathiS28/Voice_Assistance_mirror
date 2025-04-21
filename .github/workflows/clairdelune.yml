@@ -29,4 +29,4 @@ jobs:
 
     - name: Run tests
       run: |
-        python -m unittest revathi_test_main.py
+        python -m unittest test_main.py
