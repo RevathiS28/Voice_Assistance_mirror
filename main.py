@@ -143,4 +143,4 @@ cv2.destroyAllWindows()
 pose.close()
 
 
-# Triggering CI pipeline
+# Triggering CI pipelines.
