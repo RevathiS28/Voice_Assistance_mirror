@@ -116,7 +116,7 @@ _We are building the future._
 ## 📬 Get in Touch
 
 For collaborations, demos, or partnership inquiries:  
-📧 **contact@clairdelune.ai**  
+📧 **contact.clairdelune.ai@gmail.com**  
 📞 **+91 9611467899**
 
 ---
