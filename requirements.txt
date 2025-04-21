@@ -57,7 +57,6 @@ python-dateutil
 python-dotenv
 pyttsx3
 pytz
-pywin32
 PyYAML
 requests
 requests-toolbelt
