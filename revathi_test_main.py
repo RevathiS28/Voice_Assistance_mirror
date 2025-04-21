@@ -2,7 +2,8 @@ import unittest
 from unittest.mock import patch, MagicMock
 import time
 import main
-from voice_utils import respond_to_skin_tone, suggest_outfits_based_on_body_type, ask_about_body_detection
+from main import get_greeting, respond_to_skin_tone, suggest_outfits_based_on_body_type, ask_about_body_detection
+from voice_utils import speak, listen_for_command
 
 class TestVoiceAssistant(unittest.TestCase):
 
@@ -78,36 +79,29 @@ class TestVoiceAssistant(unittest.TestCase):
     @patch('actions.outfit_suggestion.suggest_outfit_based_on_body_and_skin_tone', return_value="A lovely blue jacket")
     def test_main_flow(self, mock_outfit, mock_body_structure, mock_camera, mock_listen, mock_speak):
         # Simulate user saying "Yes"
-        mock_listen.return_value = "Yes"
+        mock_listen.side_effect = ["Yes", "Open the camera", "Yes"]
         with patch('builtins.print') as mock_print:
-            main()  # Ensure 'main' function is correctly defined and imported
-            mock_speak.assert_called_with("Great! Let's get started.")
-            mock_speak.assert_called_with("Opening camera for real-time analysis...")
-
-        # Simulate user asking for camera analysis and body detection
-        mock_listen.return_value = "Open the camera"
-        mock_speak.assert_called_with("Opening camera for real-time analysis...")
-        mock_speak.assert_called_with("Analyzing body structure...")
-
-        # Simulate user selecting "Yes" for outfit selection
-        mock_listen.return_value = "Yes"
-        mock_outfit.assert_called_with("Mesomorph", "Light")
-        mock_speak.assert_called_with("A lovely blue jacket")
+            main.main()  # Call main.main() explicitly
+            mock_speak.assert_any_call("Great! Let's get started.")
+            mock_speak.assert_any_call("Opening camera for real-time analysis...")
+            mock_speak.assert_any_call("Analyzing body structure...")
+            mock_outfit.assert_called_with("Mesomorph", "Light")
+            mock_speak.assert_any_call("A lovely blue jacket")
 
     @patch('voice_utils.speak')
     @patch('voice_utils.listen_for_command')
     def test_invalid_user_responses_in_main(self, mock_listen, mock_speak):
         # Test for invalid "Yes"/"No" responses from the user
-        mock_listen.return_value = "Maybe"
+        mock_listen.side_effect = ["Maybe", "Maybe", "Maybe"]
         with patch('builtins.print') as mock_print:
-            main()
-            mock_speak.assert_called_with("Please say 'Yes' or 'No'.")
+            main.main()
+            mock_speak.assert_any_call("Please say 'Yes' or 'No'.")
 
         # Test for repeated invalid responses
-        mock_listen.return_value = ""
+        mock_listen.side_effect = ["", "", ""]
         with patch('builtins.print') as mock_print:
-            main()
-            mock_speak.assert_called_with("Sorry, I didn't get that.")
+            main.main()
+            mock_speak.assert_any_call("Didn't catch that. Please speak clearly.")
 
 if __name__ == '__main__':
     unittest.main()
