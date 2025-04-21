@@ -1,3 +1,4 @@
+import main
 import unittest
 from unittest.mock import patch, MagicMock
 import time
