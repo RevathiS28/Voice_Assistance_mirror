@@ -7,8 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,13 +19,15 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Install dependencies
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y espeak
+        sudo apt-get install -y portaudio19-dev python3-pyaudio alsa-utils
+
+    - name: Install Python dependencies
+      run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
     - name: Run tests
-      run: |
-        python -m unittest test_main.py
+      run: python -m unittest test_main.py
