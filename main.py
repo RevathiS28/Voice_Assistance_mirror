@@ -3,6 +3,7 @@ import cv2
 import mediapipe as mp
 import numpy as np
 
+
 # Paths
 video_path = r"C:\Users\Admin\PycharmProjects\ShirtTryOns\Resources\Videos\ANKUR_1.mp4"
 shirtFolderPath = r"C:\Users\Admin\PycharmProjects\ShirtTryOns\Resources\Shirts"
